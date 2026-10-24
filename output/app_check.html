@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>App Check: Campus Customs</title>
+<style>
+  :root { --mahogany:#3b2116; --green:#1e3a2f; --brass:#b48a4a; --linen:#f2ecdf; --mat:#fbf8f1; --ink:#2a211c; --muted:#6e625a; --navy:#0f2d52; --ok:#2f7a3a; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--linen); color: var(--ink); font: 16px/1.6 Georgia, 'Times New Roman', serif; }
+  header { background: var(--mahogany); color: var(--mat); padding: 32px 20px 26px; border-bottom: 4px solid var(--green); }
+  header h1 { margin: 0 0 6px; font-weight: 400; font-size: 2rem; }
+  header p { margin: 0; color: #e9dcc6; font-style: italic; }
+  main { max-width: 1060px; margin: 0 auto; padding: 24px 20px 56px; }
+  .summary { width: 100%; border-collapse: collapse; margin: 8px 0 32px; background: var(--mat); font-family: system-ui, sans-serif; font-size: 0.92rem; }
+  .summary th, .summary td { text-align: left; padding: 9px 12px; border-bottom: 1px solid #ddd3c2; vertical-align: top; }
+  .summary th { background: #ebe3d3; }
+  .pass { color: var(--ok); font-weight: 700; white-space: nowrap; }
+  section { margin: 0 0 44px; }
+  h2 { font-weight: 400; font-size: 1.6rem; margin: 0 0 4px; }
+  .what { margin: 0 0 14px; color: var(--muted); font-style: italic; }
+  figure { margin: 0 0 14px; }
+  figure a { display: block; border: 8px solid #a98042; box-shadow: 0 8px 18px rgba(59,33,22,.25); background: var(--mat); }
+  figure img { display: block; width: 100%; height: auto; }
+  figcaption { margin-top: 10px; font-size: 1.02rem; }
+  figcaption strong { color: var(--green); }
+  .db { font-family: system-ui, sans-serif; font-size: 0.9rem; border-collapse: collapse; margin: 6px 0 0; background: var(--mat); }
+  .db th, .db td { padding: 6px 12px; border: 1px solid #ddd3c2; text-align: left; }
+  .db th { background: #ebe3d3; }
+  .note { font-family: system-ui, sans-serif; font-size: 0.85rem; color: var(--muted); }
+  code { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; background: #ebe3d3; padding: 1px 4px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>App Check: Campus Customs Shop + Chatbot</h1>
+  <p>MGT 409 Homework 4, Problem 11. Screenshots from the live site on my Mac (Oct 24, 2026), with Will running on the real model through Portkey.</p>
+</header>
+<main>
+
+<table class="summary">
+  <tr><th>#</th><th>Check</th><th>What I did</th><th>Result</th></tr>
+  <tr><td>1</td><td>Chat inventory lookup</td><td>On the Basic Hoodie Big Yale page, asked Will how many are in medium and the price</td><td class="pass">✓ Pass: $68, 5 in medium, matches the database</td></tr>
+  <tr><td>2</td><td>Dynamic search cards</td><td>Asked Will "What crewnecks do you have?"</td><td class="pass">✓ Pass: 6 crewneck cards appeared on the page</td></tr>
+  <tr><td>3</td><td>Usability feature: My size filter</td><td>On Hoodies, switched My size from Any to M</td><td class="pass">✓ Pass: 27 → 21 hoodies, each tagged with its M stock</td></tr>
+</table>
+
+<section id="inventory">
+  <h2>1. Chat inventory lookup</h2>
+  <p class="what">Does the chatbot report an item's real stock and price from the database?</p>
+  <figure>
+    <a href="app_check_images/inventory.png"><img src="app_check_images/inventory.png" alt="Will answering that the Basic Hoodie Big Yale is $68 with 5 in medium, next to the product page showing $68.00 and M: 5 left"></a>
+    <figcaption><strong>What this proves:</strong> asked "How many of these do you have in medium, and how much are they?" on the Basic Hoodie Big Yale page, Will answered "$68, with 5 in medium," which matches the price and the "M: 5 left" stock the product page reads from <code>campus_customs.db</code>. He also understood "these" meant the product open on the page.</figcaption>
+  </figure>
+  <figure>
+    <a href="app_check_images/inventory_product_page.png"><img src="app_check_images/inventory_product_page.png" alt="The same product page showing the full stock-by-size table from the database"></a>
+    <figcaption><strong>Database check:</strong> the product page's stock-by-size table (from the <code>inventory</code> table) shows the same numbers Will used.</figcaption>
+  </figure>
+  <table class="db">
+    <tr><th>Field (database)</th><th>Database value</th><th>Will said</th></tr>
+    <tr><td><code>catalogue.price</code></td><td>$68.00</td><td>$68 ✓</td></tr>
+    <tr><td><code>inventory.quantity</code> (size M)</td><td>5</td><td>5 in medium ✓</td></tr>
+  </table>
+</section>
+
+<section id="search-cards">
+  <h2>2. Dynamic search cards</h2>
+  <p class="what">After a category question, do matching product cards appear on the page?</p>
+  <figure>
+    <a href="app_check_images/search_cards.png"><img src="app_check_images/search_cards.png" alt="Will's picks section showing six framed crewneck cards after asking what crewnecks do you have"></a>
+    <figcaption><strong>What this proves:</strong> asking "What crewnecks do you have?" made Will search the catalogue and put 6 crewneck cards (image, name, category, short description, price) in the "Will's picks" section on the page, and his bubble says "6 items on the page: Crewnecks." The cards' prices ($58 each) come from the database, and clicking any card opens that product's page.</figcaption>
+  </figure>
+</section>
+
+<section id="usability">
+  <h2>3. Usability feature (Problem 9): My size filter</h2>
+  <p class="what">Does picking a size show only what's actually in stock in that size?</p>
+  <figure>
+    <a href="app_check_images/usability_my_size_filters.png"><img src="app_check_images/usability_my_size_filters.png" alt="Hoodies with My size set to Any: 27 items"></a>
+    <figcaption><strong>Before:</strong> Hoodies with My size set to "Any" shows all 27 hoodies, including ones sold out in some sizes.</figcaption>
+  </figure>
+  <figure>
+    <a href="app_check_images/usability_my_size.png"><img src="app_check_images/usability_my_size.png" alt="Hoodies with My size set to M: 21 items in stock in M, cards tagged M: in stock or M: only 5 left"></a>
+    <figcaption><strong>What this proves:</strong> with My size set to M, the page shows only the 21 hoodies in stock in medium (27 → 21), and each card shows that size's stock ("M: in stock" or "M: only 5 left"). The site remembers the size on the next visit, so shoppers don't click into items they can't buy.</figcaption>
+  </figure>
+</section>
+
+<p class="note">Images are in <code>app_check_images/</code> next to this page and linked with relative paths, so this file opens by double-clicking. Click any screenshot to see it full size.</p>
+</main>
+</body>
+</html>

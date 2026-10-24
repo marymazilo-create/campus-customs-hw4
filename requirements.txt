@@ -1,0 +1,7 @@
+# MGT 409 HW 4: Campus Customs Shop + Chatbot (backend)
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+python-dotenv>=1.0,<2
+pydantic>=2.12,<3
+# Agent brain (Problem 5); same PydanticAI version as Homeworks 2-3
+pydantic-ai-slim[openai]==2.43.0
